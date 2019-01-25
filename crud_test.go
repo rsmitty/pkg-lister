@@ -100,8 +100,23 @@ func TestCrud(t *testing.T) {
 		in  []string
 		out string
 	}{
+		//Test QUERY
 		{[]string{"QUERY", "A", ""}, "OK\n"},   //Present
 		{[]string{"QUERY", "Z", ""}, "FAIL\n"}, //Not present
+
+		//Test INDEX
+		{[]string{"INDEX", "D", "B,C"}, "OK\n"},   //Add with present deps
+		{[]string{"INDEX", "E", ""}, "OK\n"},      //Add with no deps
+		{[]string{"INDEX", "E", "B,C"}, "OK\n"},   //Update existing pkg with new deps
+		{[]string{"INDEX", "Z", "X,Y"}, "FAIL\n"}, //Add with non-present deps
+
+		//Test REMOVE
+		{[]string{"REMOVE", "A", ""}, "OK\n"},   //Present and isn't an dep
+		{[]string{"REMOVE", "Z", ""}, "OK\n"},   //Not present
+		{[]string{"REMOVE", "B", ""}, "FAIL\n"}, //Present and isn't an dep
+
+		//Test bad input
+		{[]string{"NOTAREALOPTION", "A", ""}, "ERROR\n"}, //Present and isn't an dep
 
 	}
 

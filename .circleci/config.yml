@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.11
+    working_directory: /go/src/github.com/rsmitty/pkg-lister
+    steps:
+      ## Test code first
+      - checkout
+      - run:
+          name: Go tests
+          command: go test -v
+      ## Setup docker and build/push    
+      - setup_remote_docker
+      - run:
+          name: Docker login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
+          name: Build and push docker image
+          command: |
+            cd build
+            make all

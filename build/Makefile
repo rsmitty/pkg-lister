@@ -1,6 +1,5 @@
 DOCKER_IMAGE_NAME=rsmitty/pkg-lister
-VERSION ?= $(shell bash -c 'read -p "Enter version tag: " pwd; echo $$pwd')
-
+DOCKER_IMAGE_VERSION ?= latest
 all: linux docker
 
 darwin:
@@ -12,10 +11,10 @@ linux:
 docker: docker-build docker-push
 
 docker-build: 
-	docker build -t $(DOCKER_IMAGE_NAME):$(VERSION) -f ./Dockerfile ../
+	docker build -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION) -f ./Dockerfile ../
 
 docker-push:
-	docker push $(DOCKER_IMAGE_NAME):$(VERSION)
+	docker push $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 
 clean:
 	rm -rf ../bin

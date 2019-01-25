@@ -32,8 +32,8 @@ func TestFetchEntry(t *testing.T) {
 		in  []string
 		out string
 	}{
-		{[]string{"A", "B,C"}, "OK\n"},   //A is present in test data
-		{[]string{"X", "Y,Z"}, "FAIL\n"}, //X isn't in our index
+		{[]string{"A", ""}, "OK\n"},   //A is present in test data
+		{[]string{"X", ""}, "FAIL\n"}, //X isn't in our index
 	}
 
 	for _, testData := range testTable {
@@ -79,7 +79,6 @@ func TestRemoveEntry(t *testing.T) {
 		{[]string{"B", ""}, "FAIL\n"}, //B is a dependency for A
 		{[]string{"Z", ""}, "OK\n"},   //Nonexistent
 		{[]string{"A", ""}, "OK\n"},   //A isn't a dependency
-
 	}
 
 	for _, testData := range testTable {
@@ -92,7 +91,7 @@ func TestRemoveEntry(t *testing.T) {
 	}
 }
 
-// This function should test all CRUD capabilities, so the tests above may be superfluous
+// This function should test all CRUD capabilities, which will call all the functions tested above. So those tests above may be superfluous
 func TestCrud(t *testing.T) {
 	pkgIndex = map[string][]string{"A": {"B", "C"}, "B": {}, "C": {}}
 
@@ -105,15 +104,15 @@ func TestCrud(t *testing.T) {
 		{[]string{"QUERY", "Z", ""}, "FAIL\n"}, //Not present
 
 		//Test INDEX
-		{[]string{"INDEX", "D", "B,C"}, "OK\n"},   //Add with present deps
 		{[]string{"INDEX", "E", ""}, "OK\n"},      //Add with no deps
+		{[]string{"INDEX", "D", "B,C"}, "OK\n"},   //Add with present deps
 		{[]string{"INDEX", "E", "B,C"}, "OK\n"},   //Update existing pkg with new deps
 		{[]string{"INDEX", "Z", "X,Y"}, "FAIL\n"}, //Add with non-present deps
 
 		//Test REMOVE
 		{[]string{"REMOVE", "A", ""}, "OK\n"},   //Present and isn't an dep
 		{[]string{"REMOVE", "Z", ""}, "OK\n"},   //Not present
-		{[]string{"REMOVE", "B", ""}, "FAIL\n"}, //Present and isn't an dep
+		{[]string{"REMOVE", "B", ""}, "FAIL\n"}, //Present and is a dep
 
 		//Test bad input
 		{[]string{"NOTAREALOPTION", "A", ""}, "ERROR\n"}, //Present and isn't an dep

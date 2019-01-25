@@ -14,7 +14,7 @@ func handle(connection net.Conn) {
 	//Read client input line-by-line (scanner.Scan() looks for \n automatically)
 	scanner := bufio.NewScanner(connection)
 	for scanner.Scan() {
-		splitLine, err := splitLine(scanner.Text())
+		splitLine, err := validateAndSplitLine(scanner.Text())
 		if err != nil {
 			log.Println("[ERROR] " + err.Error())
 			connection.Write([]byte("ERROR\n"))

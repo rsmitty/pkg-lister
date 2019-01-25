@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pkg-lister-deployment
+spec:
+  selector:
+    matchLabels:
+      app: pkg-lister
+  template:
+    metadata:
+      labels:
+        app: pkg-lister
+    spec:
+      containers:
+      - name: pkg-lister
+        image: rsmitty/pkg-lister:0.1.0
+        args: ["--port", "8080"]

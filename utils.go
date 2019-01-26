@@ -18,10 +18,10 @@ func validateAndSplitLine(pkgText string) ([]string, error) {
 	}
 	split := strings.Split(pkgText, "|")
 
-	//Regex must match empty string (^$) or be in the set A-Z, a-z, 0-9, comma, underscore
-	validPkgString, _ := regexp.MatchString("^$|^[A-Za-z0-9,_]+$", split[2])
+	//Regex must match empty string (^$) or be in the set A-Z, a-z, 0-9, plus, comma, underscore, dash
+	validPkgString, _ := regexp.MatchString("^$|^[A-Za-z0-9+,_-]+$", split[2])
 	if !validPkgString {
-		return nil, errors.New("Invalid client input on pkg list " + pkgText)
+		return nil, errors.New("Invalid client input on pkg list " + split[2])
 	}
 
 	return split, nil

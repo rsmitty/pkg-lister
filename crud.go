@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-var sem = &sync.Mutex{}
+var lock = &sync.Mutex{}
 
 // isDependency takes a given package and looks to see if it's listed in any other packages dependency tree
 func isDependency(pkg string) bool {
@@ -77,13 +77,13 @@ func crud(input []string) string {
 	case "QUERY":
 		ret = fetchEntry(input[1:])
 	case "INDEX":
-		sem.Lock()
+		lock.Lock()
 		ret = editEntry(input[1:])
-		sem.Unlock()
+		lock.Unlock()
 	case "REMOVE":
-		sem.Lock()
+		lock.Lock()
 		ret = removeEntry(input[1:])
-		sem.Unlock()
+		lock.Unlock()
 	default:
 		ret = "ERROR\n"
 	}

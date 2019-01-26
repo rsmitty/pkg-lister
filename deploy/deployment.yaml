@@ -13,5 +13,5 @@ spec:
     spec:
       containers:
       - name: pkg-lister
-        image: rsmitty/pkg-lister:0.1.0
+        image: rsmitty/pkg-lister:latest
         args: ["--port", "8080"]
